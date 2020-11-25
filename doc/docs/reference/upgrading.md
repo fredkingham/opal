@@ -3,6 +3,51 @@
 This document provides instructions for specific steps required to upgrading your Opal
 application to a later version where there are extra steps required.
 
+#### v0.18.3 -> v0.20.0
+
+##### Dependency upgrades
+
+How you do this depends on how you have configured your application. You will need to
+update both the Opal version, and versions of dependencies upgraded dependencies if
+you have specified them in for instance, a requirements.txt.
+
+(This will be the case if you use the requirements.txt originally provided by
+`opal startproject`)
+
+    # requirements.txt
+    opal==0.20.0
+    django==2.2.16
+    django-compressor==2.4
+    six==1.15.0
+    psycopg2==2.8.6
+
+
+##### Episode Categories
+
+
+`Inpatient` is no longer provided in `opal.core.episodes`. If you are using the
+Inpatient episode category you can add it in your `{{ appname }}/episode_categories.py`
+```
+from opal.core.episodes import EpisodeCategory
+
+
+class InpatientEpisode(EpisodeCategory):
+    display_name    = 'Inpatient'
+    detail_template = 'detail/inpatient.html'
+    stages          = [
+        'Inpatient',
+        'Followup',
+        'Discharged'
+    ]
+```
+
+##### Django Axes
+
+Opal has removed the built in dependency on Django Axes. If your application wishes to
+continue using it, then the relevant settings should already be in your settings file.
+If you were relying on the entry in the opal `setup.py` to install it at deployment time,
+you will need to ensure this via some other mechanism - for instance ensuring it is in your
+application `requirements.txt`.
 
 #### v0.17.1 -> v0.18.2
 
